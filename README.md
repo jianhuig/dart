@@ -1,2 +1,2 @@
 # Table of Contents
-[File](dart/file_generator.R)
+[file_generator.R](file_generator.R)
