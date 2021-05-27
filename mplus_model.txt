@@ -1,0 +1,25 @@
+[[init]]
+iterators = classes dataset;
+classes = 3; !* This number can be changed as desired *!  
+dataset=1:1000;
+filename = "dart[[dataset]]_N[[classes]].inp";
+outputDirectory = "~/dart_tr/";
+[[/init]]
+
+TITLE: "dart[[dataset]] Number of class= [[classes]]"
+DATA: FILE = "~/dart_tr[[dataset]].dat";
+VARIABLE: NAMES ARE id y1-y12 cova covb covc;
+CATEGORICAL ARE y1-y12(*);
+MISSING ARE ALL(-999);
+USEVARIABLES ARE y1-y12 cova covb covc;
+CLASSES = c([[classes]])
+ANALYSIS: 
+TYPE=  MIXTURE;
+MODEL:
+     %OVERALL%
+     i s| y1@1 y2@2 y3@3 y4@4 y5@5 y6@6 y7@7 y8@8 y9@9 y10@10 y11@11 y12@12;
+     c ON cova covb covc;
+OUTPUT: TECH8
+
+SAVEDATA: file is "dart[[dataset]]_N[[classes]]_prob.txt"; 
+SAVE IS CPROB; 
