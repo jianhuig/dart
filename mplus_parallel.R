@@ -4,7 +4,7 @@ library(doParallel)
 
 createModels("model.txt")
 
-num_of_class = "depression.inp"
+num_of_class = "dart.inp" # can be changed to dart_tr.out
 
 file <- list.files(pattern=num_of_class, full.name=T)
 
@@ -15,18 +15,12 @@ time_elapsed <- foreach(i=file,.packages = c("MplusAutomation"),.combine = "rbin
 }
 stopCluster(cl) 
 
-num_of_class = "depression.out"
+num_of_class = "dart.out" # can be changed to dart_tr.out
 files <- list.files(pattern=num_of_class, full.name=T)
 
-result <- readModels('dartfull_n4_depression.out',quiet = TRUE,recursive = T) #n_4 can be changed as desired
+result <- readModels('dart_n4.out',quiet = TRUE,recursive = T) #n_4 can be changed as desired
 SummaryTable(result)
-cl <- makeCluster(parallel::detectCores()-1)
-registerDoParallel(cl)
-results <- foreach(i = files,.packages = c("MplusAutomation"),.combine = "rbind") %dopar%{
-  temp <- readModels(i,quiet = TRUE)
-  c(SummaryTable(temp)$'BIC')}
-stopCluster(cl)
-mean(results)
+
 
 for(i in results){
   entropy<-c(entropy,i$summaries$Entropy)
